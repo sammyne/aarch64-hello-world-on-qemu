@@ -37,5 +37,8 @@ qemu-system-aarch64 -M virt -cpu cortex-a72 -nographic -kernel hello_world.elf
 Hello World!
 ```
 
+## 2. 温馨提示
+- 这个版本无法引用 libc。如果需要依赖 libc，请使用 v2 目录的的版本。
+
 ## 2. 参考文献
 - [Lenz-K/arm64-kvm-hello-world](https://github.com/Lenz-K/arm64-kvm-hello-world#1-bare-metal-aarch64-qemu)
