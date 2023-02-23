@@ -1,3 +1,4 @@
+// 对于 virt 类型的 qemu 机器，内存映射的 UART0 的地址为  0x09000000。
 volatile unsigned int * const UART0DR = (unsigned int *) 0x09000000;
 
 void print_uart0(const char *s) {
