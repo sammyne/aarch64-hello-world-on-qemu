@@ -26,5 +26,16 @@ bash play.sh
 make check
 ```
 
+成功执行后，样例日志如下
+
+```bash
+aarch64-linux-gnu-as -mcpu=cortex-a72 -o startup.o startup.s
+aarch64-linux-gnu-gcc -c -o hello_world.o hello_world.c
+# Link the two object files to an elf file
+aarch64-linux-gnu-ld -T link_script.ld startup.o hello_world.o -o hello_world.elf
+qemu-system-aarch64 -M virt -cpu cortex-a72 -nographic -kernel hello_world.elf
+Hello World!
+```
+
 ## 2. 参考文献
 - [Lenz-K/arm64-kvm-hello-world](https://github.com/Lenz-K/arm64-kvm-hello-world#1-bare-metal-aarch64-qemu)
