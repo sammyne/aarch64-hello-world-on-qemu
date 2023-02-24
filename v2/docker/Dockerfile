@@ -9,7 +9,7 @@ RUN wget http://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v5.x/linux-$VERSION.
 RUN tar -Jxvf linux-$VERSION.tar.xz && mv linux-$VERSION linux
 
 
-FROM sammyne/qemu:7.2.0-aarch64-ubuntu20.04
+FROM sammyne/qemu:7.2.0-aarch64-ubuntu20.04 AS builder
 
 # bc bison, flex, libssl-dev sees https://www.kernel.org/doc/html/v5.4/process/changes.html
 # cpio for packing up apps
@@ -27,3 +27,14 @@ COPY --from=repo /output/linux .
 RUN make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig  &&\
   ./scripts/config --set-val CONFIG_BLK_DEV_RAM y               &&\
   make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j16
+
+
+FROM sammyne/qemu:7.2.0-aarch64-ubuntu20.04
+
+RUN apt update                                        &&\
+  apt install -y gcc-aarch64-linux-gnu gdb-multiarch    \  
+    cpio                                              &&\
+  apt clean                                           &&\
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+COPY --from=builder /linux/arch/arm64/boot/Image /linux/arch/arm64/boot/Image
